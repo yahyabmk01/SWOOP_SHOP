@@ -104,6 +104,8 @@ const App: React.FC = () => {
     localStorage.setItem('swoop_cart', JSON.stringify(cart));
   }, [cart]);
 
+  // Removed internal page view tracking to use Google Analytics instead
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -256,7 +258,7 @@ const App: React.FC = () => {
             <img src="https://raw.githubusercontent.com/yahyabmk01/Aymen-Clothes/main/Image_202601181051-removebg-preview.png" className="w-24 grayscale brightness-200" alt="SWOOP Logo" />
           </div>
           <div className="absolute top-1/2 right-10 -translate-y-1/2 opacity-20 hidden md:block">
-            <img src="https://raw.githubusercontent.com/yahyabmk01/Aymen-Clothes/main/Image_202601181051-removebg-preview.png" className="w-24 grayscale brightness-200" alt="SWOOP Logo" />
+            <img src="https://raw.githubusercontent.com/yahyabmk01/Aymen-Clothes/main/Image_202601181051-preview.png" className="w-24 grayscale brightness-200" alt="SWOOP Logo" />
           </div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.05] select-none overflow-hidden">

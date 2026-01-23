@@ -466,17 +466,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
           <NavItem id="add" icon={Plus} label="Nouveau" />
         </div>
         <div className="flex items-center gap-4">
-          {isOwner && (
-            <a 
-              href="https://analytics.google.com/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gold hover:text-black transition-all flex items-center gap-3"
-            >
-              <BarChart3 className="w-4 h-4" />
-              <span className="hidden lg:inline">Live Traffic Analytics</span>
-            </a>
-          )}
           <button onClick={fetchGlobalData} className="w-12 h-12 bg-zinc-50 rounded-full flex items-center justify-center hover:bg-zinc-100 transition-colors">
             <RotateCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </button>
@@ -499,19 +488,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
               <NavItem id="leads" icon={ShoppingCart} label="Commandes" />
               <NavItem id="manage" icon={Box} label="Stocks" />
               <NavItem id="add" icon={Plus} label="Nouveau" />
-              <div className="mt-auto pt-8 border-t">
-                 {isOwner && (
-                    <a 
-                      href="https://analytics.google.com/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-full px-6 py-4 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gold hover:text-black transition-all flex items-center gap-3"
-                    >
-                      <BarChart3 className="w-4 h-4" />
-                      <span>Live Traffic Analytics</span>
-                    </a>
-                  )}
-              </div>
             </motion.div>
           </>
         )}
@@ -527,11 +503,10 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
               </select>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { label: 'RÉEL', val: stats.realRevenue, color: 'text-green-600', bg: 'bg-green-50' },
                 { label: 'POTENTIEL', val: stats.potentialRevenue, color: 'text-black', bg: 'bg-white' },
-                { label: 'TRAFIC (SITE)', val: stats.views, color: 'text-zinc-300', bg: 'bg-white opacity-50' },
                 { label: 'INTÉRÊT (WA)', val: stats.clicks, color: 'text-gold', bg: 'bg-gold/5' }
               ].map((kpi, i) => (
                 <div key={i} className={`${kpi.bg} p-8 rounded-[40px] border border-zinc-50 shadow-sm`}>
@@ -543,9 +518,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 bg-white p-10 rounded-[50px] shadow-sm border border-zinc-50">
-                <div className="flex items-center gap-4 mb-10">
-                  <BarChart3 className="text-gold" />
-                  <h3 className="text-xl font-display font-black uppercase tracking-widest">ACTIVITÉ RÉCENTE</h3>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                  <div className="flex items-center gap-4">
+                    <BarChart3 className="text-gold" />
+                    <h3 className="text-xl font-display font-black uppercase tracking-widest">ACTIVITÉ RÉCENTE</h3>
+                  </div>
                 </div>
                 <div className="h-[350px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
@@ -564,7 +541,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
-                <p className="mt-8 text-[10px] font-black uppercase tracking-widest text-zinc-400 text-center">Utilisez Google Analytics pour des statistiques de trafic détaillées.</p>
               </div>
 
               <div className="bg-black p-10 rounded-[50px] shadow-2xl text-white">
