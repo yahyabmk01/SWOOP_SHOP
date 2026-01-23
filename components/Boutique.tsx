@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { supabase } from '../lib/supabase';
+import { OFFICIAL_CATEGORIES } from '../constants';
 
-const CATEGORIES = ['All', 'Hoodies', 'Pants', 'T-Shirts', 'Sneakers', 'Accessories', 'Packs'];
+const CATEGORIES = ['All', ...OFFICIAL_CATEGORIES];
 
 const Boutique: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -27,8 +28,16 @@ const Boutique: React.FC = () => {
   }, []);
 
   const filteredProducts = dbProducts.filter(p => {
-    const matchesCategory = activeCategory === 'All' || p.category === activeCategory;
+    // Normalizing category strings for robust filtering (case-insensitive)
+    const productCat = (p.category || '').toString().toLowerCase().trim();
+    const activeCat = activeCategory.toLowerCase().trim();
+    
+    // Check if it matches "All" or the specific normalized category
+    const matchesCategory = activeCategory === 'All' || productCat === activeCat;
+    
+    // Search logic remains unchanged
     const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+    
     return matchesCategory && matchesSearch;
   });
 

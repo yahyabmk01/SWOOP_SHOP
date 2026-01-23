@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { AlertToast } from './ui/AlertToast';
 import { AnimatePresence, motion } from "framer-motion";
 import { GlassFilter, CustomLoader } from './ui/LiquidGlass';
+import { OFFICIAL_CATEGORIES } from '../constants';
 import { 
   MapPin, ExternalLink, Package, Phone, User, X, CheckCircle2, Clock, XCircle, 
   TrendingUp, Plus, LayoutDashboard, Box, ShoppingCart, Menu, LogOut, 
@@ -13,8 +14,8 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
 } from 'recharts';
 
-// Categories unified with storefront
-const CATEGORIES = ['Hoodies', 'Pants', 'T-Shirts', 'Sneakers', 'Accessories', 'Packs'];
+// Categories imported from constants for perfect linking
+const CATEGORIES = OFFICIAL_CATEGORIES;
 const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const SHOE_SIZES = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'];
 const DATE_FILTERS = [

@@ -3,6 +3,9 @@ import { Product, Feature } from './types';
 export const WHATSAPP_NUMBER = "+212600000000"; 
 export const BRAND_NAME = "SWOOP";
 
+// Unified Category List for the whole app
+export const OFFICIAL_CATEGORIES = ['Hoodies', 'Pants', 'T-Shirts', 'Sneakers', 'Accessories', 'Outerwear', 'Packs'];
+
 export const PRODUCTS: Product[] = [
   {
     id: 1,
