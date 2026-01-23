@@ -17,10 +17,6 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const goToAdmin = () => {
-    window.location.hash = '#admin';
-  };
-
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/90 backdrop-blur-md border-b border-zinc-200 py-2' : 'bg-transparent py-4 md:py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
@@ -40,15 +36,6 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart }) => {
 
         {/* Action Icons */}
         <div className="flex items-center space-x-4 md:space-x-6 z-[60]">
-          {/* Dev Admin Button */}
-          <button 
-            onClick={goToAdmin}
-            className="text-black/20 hover:text-gold transition-colors"
-            title="Dev Admin"
-          >
-            <i className="fa-solid fa-shield-halved text-xs"></i>
-          </button>
-
           <button 
             onClick={onOpenCart}
             className="text-black hover:text-gold transition-colors relative"
