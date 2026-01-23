@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWOOP - Luxury Streetwear</title>
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yahyabmk01/Aymen-Clothes/main/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        'gold-light': '#F1D592',
+                        'black-matte': '#080808',
+                        'white-luxury': '#F9F9F9',
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'ticker': 'ticker 40s linear infinite',
+                        'ticker-reverse': 'tickerReverse 40s linear infinite',
+                        'ticker-fast': 'ticker 20s linear infinite',
+                        'fade-in-up': 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'glow': 'glow 4s ease-in-out infinite',
+                        'shimmer': 'shimmer 3s linear infinite',
+                        'reveal': 'reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        tickerReverse: {
+                            '0%': { transform: 'translateX(-50%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        glow: {
+                            '0%, 100%': { opacity: '0.3' },
+                            '50%': { opacity: '0.6' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
+                        },
+                        reveal: {
+                          '0%': { transform: 'translateY(100%)', opacity: '0' },
+                          '100%': { transform: 'translateY(0%)', opacity: '1' }
+                        },
+                        float: {
+                          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                          '50%': { transform: 'translateY(-30px) rotate(5deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F9F9F9;
+            color: #080808;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://www.transparenttextures.com/patterns/asfalt-light.png");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
+            color: transparent;
+        }
+        .text-outline-white {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+            color: transparent;
+        }
+        .text-shimmer {
+            background: linear-gradient(90deg, #D4AF37 0%, #FFF 50%, #D4AF37 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F9F9F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #000;
+        }
+        video {
+            filter: contrast(1.05) saturate(1.1);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "clsx": "https://esm.sh/clsx@2.1.1",
+    "tailwind-merge": "https://esm.sh/tailwind-merge@3.4.0",
+    "class-variance-authority": "https://esm.sh/class-variance-authority@0.7.1",
+    "framer-motion": "https://esm.sh/framer-motion@11.18.2?external=react,react-dom",
+    "lucide-react": "https://esm.sh/lucide-react@0.474.0?external=react",
+    "recharts": "https://esm.sh/recharts@2.15.0?external=react,react-dom",
+    "@google/genai": "https://esm.sh/@google/genai@1.37.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

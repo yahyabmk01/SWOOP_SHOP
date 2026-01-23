@@ -1,0 +1,7 @@
+{
+  "name": "Copy of SWOOP",
+  "description": "Premium luxury streetwear landing page for SWOOP, featuring a sleek black and gold aesthetic, product grid, and WhatsApp integration.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
