@@ -36,9 +36,6 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onOpenCart }) => {
 
         {/* Action Icons */}
         <div className="flex items-center space-x-4 md:space-x-6 z-[60]">
-          <button className="text-black hover:text-gold transition-colors hidden sm:block">
-            <i className="fa-solid fa-magnifying-glass text-sm"></i>
-          </button>
           <button 
             onClick={onOpenCart}
             className="text-black hover:text-gold transition-colors relative"
