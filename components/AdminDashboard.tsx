@@ -8,7 +8,7 @@ import {
   MapPin, ExternalLink, Package, Phone, User, X, CheckCircle2, Clock, XCircle, 
   TrendingUp, Plus, LayoutDashboard, Box, ShoppingCart, Menu, LogOut, 
   Trash2, Edit3, Image as ImageIcon, Check, Camera, Search, Filter, ArrowUpRight,
-  History, Calendar, Save, RotateCw, Pencil, Printer
+  History, Calendar, Save, RotateCw, Pencil, Printer, BarChart3
 } from 'lucide-react';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
@@ -466,6 +466,17 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
           <NavItem id="add" icon={Plus} label="Nouveau" />
         </div>
         <div className="flex items-center gap-4">
+          {isOwner && (
+            <a 
+              href="https://analytics.google.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-6 py-3 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gold hover:text-black transition-all flex items-center gap-3"
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span className="hidden lg:inline">Live Traffic Analytics</span>
+            </a>
+          )}
           <button onClick={fetchGlobalData} className="w-12 h-12 bg-zinc-50 rounded-full flex items-center justify-center hover:bg-zinc-100 transition-colors">
             <RotateCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </button>
@@ -488,6 +499,19 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
               <NavItem id="leads" icon={ShoppingCart} label="Commandes" />
               <NavItem id="manage" icon={Box} label="Stocks" />
               <NavItem id="add" icon={Plus} label="Nouveau" />
+              <div className="mt-auto pt-8 border-t">
+                 {isOwner && (
+                    <a 
+                      href="https://analytics.google.com/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full px-6 py-4 bg-gold/10 text-gold border border-gold/20 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-gold hover:text-black transition-all flex items-center gap-3"
+                    >
+                      <BarChart3 className="w-4 h-4" />
+                      <span>Live Traffic Analytics</span>
+                    </a>
+                  )}
+              </div>
             </motion.div>
           </>
         )}
@@ -507,8 +531,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
               {[
                 { label: 'RÉEL', val: stats.realRevenue, color: 'text-green-600', bg: 'bg-green-50' },
                 { label: 'POTENTIEL', val: stats.potentialRevenue, color: 'text-black', bg: 'bg-white' },
-                { label: 'TRAFIC', val: stats.views, color: 'text-black', bg: 'bg-white' },
-                { label: 'INTÉRÊT', val: stats.clicks, color: 'text-gold', bg: 'bg-gold/5' }
+                { label: 'TRAFIC (SITE)', val: stats.views, color: 'text-zinc-300', bg: 'bg-white opacity-50' },
+                { label: 'INTÉRÊT (WA)', val: stats.clicks, color: 'text-gold', bg: 'bg-gold/5' }
               ].map((kpi, i) => (
                 <div key={i} className={`${kpi.bg} p-8 rounded-[40px] border border-zinc-50 shadow-sm`}>
                   <span className="text-[8px] font-black uppercase tracking-[0.4em] text-zinc-400 block mb-2">{kpi.label}</span>
@@ -520,17 +544,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2 bg-white p-10 rounded-[50px] shadow-sm border border-zinc-50">
                 <div className="flex items-center gap-4 mb-10">
-                  <RotateCw className="text-gold" />
-                  <h3 className="text-xl font-display font-black uppercase tracking-widest">COURBE DE CROISSANCE</h3>
+                  <BarChart3 className="text-gold" />
+                  <h3 className="text-xl font-display font-black uppercase tracking-widest">ACTIVITÉ RÉCENTE</h3>
                 </div>
                 <div className="h-[350px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={stats.chartData}>
                       <defs>
-                        <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#000" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#000" stopOpacity={0}/>
-                        </linearGradient>
                         <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.1}/>
                           <stop offset="95%" stopColor="#D4AF37" stopOpacity={0}/>
@@ -540,11 +560,11 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
                       <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900 }} />
                       <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 900 }} />
                       <Tooltip contentStyle={{ borderRadius: '20px', border: 'none', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', textTransform: 'uppercase', fontSize: '10px', fontWeight: 900 }} />
-                      <Area type="monotone" dataKey="views" name="Visites" stroke="#000" strokeWidth={3} fillOpacity={1} fill="url(#colorViews)" />
                       <Area type="monotone" dataKey="clicks" name="Clics WA" stroke="#D4AF37" strokeWidth={3} fillOpacity={1} fill="url(#colorClicks)" />
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
+                <p className="mt-8 text-[10px] font-black uppercase tracking-widest text-zinc-400 text-center">Utilisez Google Analytics pour des statistiques de trafic détaillées.</p>
               </div>
 
               <div className="bg-black p-10 rounded-[50px] shadow-2xl text-white">

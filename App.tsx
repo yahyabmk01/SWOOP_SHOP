@@ -105,14 +105,6 @@ const App: React.FC = () => {
   }, [cart]);
 
   useEffect(() => {
-    const hasVisited = sessionStorage.getItem('swoop_visited');
-    if (!hasVisited) {
-      logEvent('Page View', 'Home');
-      sessionStorage.setItem('swoop_visited', 'true');
-    }
-  }, []);
-
-  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
