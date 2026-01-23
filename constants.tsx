@@ -1,4 +1,3 @@
-
 import { Product, Feature } from './types';
 
 export const WHATSAPP_NUMBER = "+212600000000"; 
@@ -52,7 +51,7 @@ export const PRODUCTS: Product[] = [
     name: "STREET BUNDLE #01",
     price: 999,
     image: "https://picsum.photos/seed/bundle1/800/1000",
-    category: "Bundles"
+    category: "Packs"
   }
 ];
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import { supabase } from '../lib/supabase';
 
-const CATEGORIES = ['All', 'Hoodies', 'Pants', 'T-Shirts', 'Sneakers', 'Accessories', 'Bundles'];
+const CATEGORIES = ['All', 'Hoodies', 'Pants', 'T-Shirts', 'Sneakers', 'Accessories', 'Packs'];
 
 const Boutique: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('All');

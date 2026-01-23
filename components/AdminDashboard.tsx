@@ -13,7 +13,8 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
 } from 'recharts';
 
-const CATEGORIES = ['HOODIES', 'PANTALONS', 'T-SHIRTS', 'SNEAKERS', 'ACCESSOIRES', 'PACKS'];
+// Categories unified with storefront
+const CATEGORIES = ['Hoodies', 'Pants', 'T-Shirts', 'Sneakers', 'Accessories', 'Packs'];
 const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const SHOE_SIZES = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46'];
 const DATE_FILTERS = [
@@ -115,7 +116,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
     const dateStr = filterDate.toISOString();
 
     try {
-      // Conditionally fetch analytics only if user is the owner
       const promises: Promise<any>[] = [
         supabase.from('products').select('*').order('id', { ascending: false }),
         supabase.from('product_leads').select('*').gte('created_at', dateStr).order('created_at', { ascending: false }),
@@ -139,7 +139,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
     }
   }
 
-  // Parse details string into objects
   const parseDetails = (detailsStr: string): ParsedOrderItem[] => {
     if (!detailsStr) return [];
     return detailsStr.split(' || ').map((itemStr, idx) => {
@@ -161,7 +160,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
   };
 
   const stats = useMemo(() => {
-    // Analytics calculations only make sense if user is owner
     if (!isOwner) return { realRevenue: 0, potentialRevenue: 0, views: 0, clicks: 0, chartData: [], topProducts: [] };
 
     const realRevenue = leads.filter(l => l.status === 'Completed').reduce((acc, curr) => acc + (Number(curr.total_price) || 0), 0);
@@ -169,7 +167,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
     const views = allEvents.filter(e => e.event_name === 'Page View').length;
     const clicks = allEvents.filter(e => e.event_name === 'WhatsApp Click').length;
     
-    // Graph Data
     const chartMap: Record<string, { name: string, views: number, clicks: number }> = {};
     const now = new Date();
     for (let i = dateFilterDays - 1; i >= 0; i--) {
@@ -305,15 +302,28 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
     for (const file of Array.from(files) as File[]) {
       try {
         const compressedBlob = await compressImage(file);
-        const fileName = `${Date.now()}-${file.name.split('.')[0]}.webp`;
+        const fileName = `${Date.now()}-${file.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.webp`;
+        
+        console.log(`[Storage] Tentative d'upload: ${fileName} vers le bucket 'product-images'`);
+        
         const { error: uploadError } = await supabase.storage.from('product-images').upload(fileName, compressedBlob, {
-            contentType: 'image/webp'
+            contentType: 'image/webp',
+            cacheControl: '3600',
+            upsert: false
         });
-        if (uploadError) { showToast('error', 'Upload Error', uploadError.message); continue; }
+
+        if (uploadError) { 
+          console.error("[Supabase Storage Error Full Response]:", uploadError);
+          showToast('error', 'Upload Error', `Code: ${uploadError.name} - ${uploadError.message}`); 
+          continue; 
+        }
+
         const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(fileName);
+        console.log(`[Storage] Succès! URL Publique: ${publicUrl}`);
         newUrls.push(publicUrl);
       } catch (err) {
-        showToast('error', 'Compression Error', 'Une erreur est survenue lors de l\'optimisation.');
+        console.error("[Local Compression Error]:", err);
+        showToast('error', 'Compression Error', 'Une erreur est survenue lors de l\'optimisation locale.');
       }
     }
     setFormImages(newUrls);
@@ -361,7 +371,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
     if (!selectedLead) return;
     setIsSavingLead(true);
     
-    // Recalculate total price based on current items
     const newTotal = editLeadItems.reduce((acc, item) => {
       const product = products.find(p => p.name === item.name);
       return acc + (product ? product.price * item.qty : 0);
@@ -387,7 +396,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
       showToast('success', 'Modifications Enregistrées', 'La commande a été mise à jour.');
       setIsEditingLead(false);
       fetchGlobalData();
-      setSelectedLead(null); // Close panel to refresh
+      setSelectedLead(null);
     } catch (err) {
       showToast('error', 'Erreur', 'Impossible de sauvegarder les modifications.');
     } finally {
@@ -442,7 +451,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
         </AnimatePresence>
       </div>
 
-      {/* NAVBAR */}
       <nav className="fixed top-0 w-full z-[100] bg-white/70 backdrop-blur-2xl border-b border-zinc-100 h-20 md:h-24 px-6 md:px-12 flex justify-between items-center no-print">
         <div className="flex items-center gap-6">
           <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden p-3 bg-zinc-50 rounded-xl">
@@ -466,7 +474,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
         </div>
       </nav>
 
-      {/* MOBILE DRAWER */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -486,7 +493,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
       </AnimatePresence>
 
       <main className="pt-32 md:pt-40 container mx-auto px-6 max-w-7xl no-print">
-        {/* BUREAU / ANALYTICS */}
         {activeTab === 'nav' && isOwner && (
           <div className="space-y-12 animate-fade-in-up">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -565,7 +571,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
           </div>
         )}
 
-        {/* COMMANDES */}
         {activeTab === 'leads' && (
           <div className="space-y-8 animate-fade-in-up">
             <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-6">
@@ -623,7 +628,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
           </div>
         )}
 
-        {/* INVENTAIRE */}
         {activeTab === 'manage' && (
           <div className="space-y-8 animate-fade-in-up">
             <div className="flex justify-between items-center">
@@ -666,11 +670,8 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
           </div>
         )}
 
-        {/* AJOUTER / MODIFIER */}
         {activeTab === 'add' && (
           <div className="max-w-4xl mx-auto space-y-8 animate-fade-in-up pb-32">
-            
-            {/* 1. INFORMATIONS CARD */}
             <div className="bg-white p-10 md:p-14 rounded-[50px] shadow-sm border border-zinc-50 relative overflow-hidden">
               <div className="flex justify-between items-center mb-12">
                 <h3 className="text-2xl font-display font-black uppercase tracking-tighter">INFORMATIONS</h3>
@@ -708,7 +709,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
               </div>
             </div>
 
-            {/* 2. TAILLES & COULEURS CARD */}
             <div className="bg-white p-10 md:p-14 rounded-[50px] shadow-sm border border-zinc-50">
               <h3 className="text-2xl font-display font-black uppercase tracking-tighter mb-12">TAILLES & COULEURS</h3>
               
@@ -770,7 +770,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
               </div>
             </div>
 
-            {/* 3. GALERIE PHOTOS CARD */}
             <div className="bg-white p-10 md:p-14 rounded-[50px] shadow-sm border border-zinc-50">
               <h3 className="text-2xl font-display font-black uppercase tracking-tighter mb-12">GALERIE PHOTOS</h3>
               <div className="flex flex-wrap gap-6">
@@ -799,7 +798,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
               </div>
             </div>
 
-            {/* ACTION BUTTON */}
             <button 
               onClick={handleSaveProduct}
               disabled={isRefreshing}
@@ -817,7 +815,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
         )}
       </main>
 
-      {/* LEAD DETAIL PANEL */}
       <AnimatePresence>
         {selectedLead && (
           <>
@@ -829,14 +826,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
                   <p className="text-[9px] font-black text-zinc-400 uppercase tracking-widest">DOSSIER COMMANDE</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  {/* Print Button */}
                   <button 
                     onClick={handlePrintSticker}
                     className="w-12 h-12 bg-zinc-50 rounded-full flex items-center justify-center text-zinc-400 hover:bg-black hover:text-white transition-all shadow-sm"
                   >
                     <Printer className="w-5 h-5" />
                   </button>
-                  {/* Toggle Edit Button */}
                   <button 
                     onClick={() => setIsEditingLead(!isEditingLead)}
                     className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${isEditingLead ? 'bg-gold text-white shadow-lg' : 'bg-zinc-50 text-zinc-400 hover:bg-zinc-100'}`}
@@ -908,7 +903,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
                   </div>
                 </div>
 
-                {/* LOGISTICS - ALWAYS NON-EDITABLE MAP LINK AS REQUESTED */}
                 <div className="space-y-6">
                   <div className="flex items-center gap-4 text-gold"><MapPin className="w-4 h-4" /><h4 className="text-[10px] font-black uppercase tracking-widest">LOGISTIQUE</h4></div>
                   <button 
@@ -926,7 +920,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
                   </button>
                 </div>
 
-                {/* PANIER - LIST OF PRODUCTS WITH IMAGES */}
                 <div className="space-y-8">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 text-gold"><Package className="w-4 h-4" /><h4 className="text-[10px] font-black uppercase tracking-widest">PANIER</h4></div>
@@ -1014,8 +1007,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
                             <span className="text-sm font-black italic text-zinc-300">X{item.qty}</span>
                           )}
                         </div>
-
-                        {/* Delete Button in Edit Mode */}
                         {isEditingLead && (
                           <button 
                             onClick={() => {
@@ -1043,7 +1034,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
         )}
       </AnimatePresence>
 
-      {/* PRINT-ONLY COMPONENT (BON DE COMMANDE / STICKER) */}
       <style>
         {`
           @media print {
