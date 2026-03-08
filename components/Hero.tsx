@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
           playsInline 
           className="w-full h-full object-cover scale-100 brightness-[1.05] contrast-[1.02]"
         >
-          <source src="https://github.com/yahyabmk01/Aymen-Clothes/raw/main/HERO%20AYMEN.webm" type="video/webm" />
+          <source src="https://github.com/yahyabmk01/Aymen-Clothes/raw/main/swoop%20hero%202.webm" type="video/webm" />
           Your browser does not support the video tag.
         </video>
       </div>
