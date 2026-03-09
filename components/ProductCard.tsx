@@ -47,12 +47,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      <div className="relative w-full aspect-square flex items-center justify-center p-4">
+      <div className="relative w-full aspect-[9/16] flex items-center justify-center p-0 overflow-hidden">
         <div className="absolute inset-0 bg-gold/5 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
         <img 
           src={displayImage} 
           alt={product.name}
-          className="w-full h-full object-contain filter group-hover:scale-110 transition-all duration-700 z-10"
+          className="w-full h-full object-cover transition-all duration-700 z-10"
           onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/800x1000?text=Image+Error"; }}
         />
       </div>

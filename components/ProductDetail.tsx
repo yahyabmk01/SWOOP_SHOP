@@ -133,7 +133,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, onAddToC
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
           <div className="space-y-6 md:sticky md:top-40">
-            <div className="aspect-[4/5] bg-zinc-50 border border-zinc-200 flex items-center justify-center overflow-hidden relative group">
+            <div 
+              className="aspect-[9/16] bg-zinc-50 border border-zinc-200 flex items-center justify-center overflow-hidden relative group"
+            >
                <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
                   <span className="bg-black text-white text-[9px] font-black uppercase px-3 py-1 tracking-widest">Limited Drop</span>
                   {hasValidDiscount && (
@@ -152,7 +154,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ product, onBack, onAddToC
                 <button 
                   key={i} 
                   onClick={() => setActiveImage(url)} 
-                  className={`w-20 aspect-[3/4] border-2 transition-all duration-300 overflow-hidden ${activeImage === url ? 'border-black' : 'border-zinc-100 opacity-50 hover:opacity-100'}`}
+                  className={`w-16 md:w-20 aspect-[9/16] border-2 transition-all duration-300 overflow-hidden ${activeImage === url ? 'border-black' : 'border-zinc-100 opacity-50 hover:opacity-100'}`}
                 >
                   <img src={url} className="w-full h-full object-cover" />
                 </button>

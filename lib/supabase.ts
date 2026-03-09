@@ -1,4 +1,4 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { createClient } from '@supabase/supabase-js';
 
 // Use the environment variables you added in Vercel
 const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://gsfpvruwnaxscvgpkuvj.supabase.co';

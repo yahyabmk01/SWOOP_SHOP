@@ -117,7 +117,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
     const dateStr = filterDate.toISOString();
 
     try {
-      const promises: Promise<any>[] = [
+      const promises: any[] = [
         supabase.from('products').select('*').order('id', { ascending: false }),
         supabase.from('product_leads').select('*').gte('created_at', dateStr).order('created_at', { ascending: false }),
       ];
@@ -902,19 +902,38 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
 
                 <div className="space-y-6">
                   <div className="flex items-center gap-4 text-gold"><MapPin className="w-4 h-4" /><h4 className="text-[10px] font-black uppercase tracking-widest">LOGISTIQUE</h4></div>
-                  <button 
-                    onClick={() => window.open(selectedLead.latitude ? `https://www.google.com/maps/search/?api=1&query=${selectedLead.latitude},${selectedLead.longitude}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedLead.gps_coordinates)}`, '_blank')}
-                    className="w-full bg-black p-8 text-white rounded-[40px] flex items-center justify-between group"
-                  >
-                    <div className="flex items-center gap-6">
-                      <MapPin className="w-6 h-6 text-gold" />
-                      <div className="text-left">
-                        <span className="block text-[11px] font-black uppercase">Localiser la livraison</span>
-                        <span className="block text-[8px] opacity-40 uppercase mt-1">Ouvrir dans Google Maps</span>
-                      </div>
-                    </div>
-                    <ArrowUpRight className="opacity-40 group-hover:opacity-100" />
-                  </button>
+                  <div className="bg-zinc-50 p-8 rounded-[40px] space-y-4">
+                    {selectedLead.gps_coordinates?.includes(' | ') ? (
+                      <>
+                        <div className="flex justify-between items-start border-b border-zinc-100 pb-4">
+                          <span className="text-[9px] font-black text-zinc-300">ADRESSE</span>
+                          <span className="text-sm font-black uppercase text-right max-w-[200px]">{selectedLead.gps_coordinates.split(' | ')[0]}</span>
+                        </div>
+                        <div className="flex justify-between items-center border-b border-zinc-100 pb-4">
+                          <span className="text-[9px] font-black text-zinc-300">VILLE</span>
+                          <span className="text-sm font-black uppercase">{selectedLead.gps_coordinates.split(' | ')[1]}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-[9px] font-black text-zinc-300">CODE POSTAL</span>
+                          <span className="text-sm font-black uppercase">{selectedLead.gps_coordinates.split(' | ')[2]}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <button 
+                        onClick={() => window.open(selectedLead.latitude ? `https://www.google.com/maps/search/?api=1&query=${selectedLead.latitude},${selectedLead.longitude}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedLead.gps_coordinates)}`, '_blank')}
+                        className="w-full bg-black p-8 text-white rounded-[40px] flex items-center justify-between group"
+                      >
+                        <div className="flex items-center gap-6">
+                          <MapPin className="w-6 h-6 text-gold" />
+                          <div className="text-left">
+                            <span className="block text-[11px] font-black uppercase">Localiser la livraison</span>
+                            <span className="block text-[8px] opacity-40 uppercase mt-1">Ouvrir dans Google Maps</span>
+                          </div>
+                        </div>
+                        <ArrowUpRight className="opacity-40 group-hover:opacity-100" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="space-y-8">
@@ -1080,6 +1099,27 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ session, onLogout, trig
                 <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">TEL:</span>
                 <span className="text-xs font-black">{selectedLead.customer_phone}</span>
               </div>
+              {selectedLead.gps_coordinates?.includes(' | ') ? (
+                <>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">ADRESSE:</span>
+                    <span className="text-xs font-black uppercase">{selectedLead.gps_coordinates.split(' | ')[0]}</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">VILLE:</span>
+                    <span className="text-xs font-black uppercase">{selectedLead.gps_coordinates.split(' | ')[1]}</span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">CODE POSTAL:</span>
+                    <span className="text-xs font-black uppercase">{selectedLead.gps_coordinates.split(' | ')[2]}</span>
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col gap-1">
+                  <span className="text-[8px] font-black text-zinc-400 uppercase tracking-widest">ADRESSE:</span>
+                  <span className="text-xs font-black uppercase">{selectedLead.gps_coordinates}</span>
+                </div>
+              )}
             </div>
 
             <div className="space-y-3 mb-6">

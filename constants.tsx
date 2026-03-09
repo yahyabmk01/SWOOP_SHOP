@@ -1,6 +1,6 @@
 import { Product, Feature } from './types';
 
-export const WHATSAPP_NUMBER = "+212600000000"; 
+export const WHATSAPP_NUMBER = "+212662434404"; 
 export const BRAND_NAME = "SWOOP";
 
 // Unified Category List for the whole app
